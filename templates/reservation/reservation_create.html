@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+{#Title#}
+{% block title %}
+    <title>Make a Reservation</title>
+{% endblock %}
+
+{#Style#}
+{% block style %}
+
+ <style>
+    a {
+        text-decoration: none;
+    }
+    .wrapper {
+        padding: 3%;
+        margin-top: 5%;
+        background-color: rgba(255,255,255,0.9);
+        animation: fadein 1s;
+    }
+    @keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    body {
+        background-image: url({% static 'img/home_cover.jpg' %});
+        background-size: cover;
+        background-attachment: fixed;
+    }
+ </style>
+    {{ form.media }}
+{% endblock %}
+
+
+{#Content#}
+{% block content %}
+    <div class="container">
+        <div class="wrapper">
+            <h1>New Reservation</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+
+                {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field | add_class:'form-control'}}
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }} <br></span>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <p class="help-block'">Please fill in YYYY-MM-DD HH:MM format</p>
+                <button type="submit" class="btn btn-primary">Reserve</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{#Javascript#}
+{% block javascript %}
+
+{% endblock %}

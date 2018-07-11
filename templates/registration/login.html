@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+{% block style %}
+  <style media="screen">
+      .wrapper {
+          padding: 3%;
+          margin-top: 5%;
+          background-color: rgba(255,255,255,0.9);
+          animation: fadein 1s;
+      }
+      @keyframes fadein {
+          from {
+              opacity: 0;
+          }
+          to {
+              opacity: 1;
+          }
+      }
+      body {
+          background-image: url({% static 'img/home_cover.jpg' %});
+          background-size: cover;
+          background-attachment: fixed;
+      }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <div class="offset-3 col-6 wrapper">
+        <h1>Login</h1>
+        <form method="post" action=".">
+            {% csrf_token %}
+            {{ form|bootstrap }}
+            <input class='btn btn-block btn-primary' type="submit" value="Login" />
+        </form>
+        <p>Not a member ? <a href="{% url 'registration_register' %}">Register</a>!</p>
+    </div>
+</div>
+
+{% endblock %}

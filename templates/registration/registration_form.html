@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+{% block title %}
+  <title>Registration</title>
+{% endblock title %}
+
+{% block style %}
+  <style media="screen">
+    body {
+        background-image: url({% static 'img/home_cover.jpg' %});
+        background-attachment: fixed;
+        background-size: cover;
+    }
+
+    .container {
+        padding: 3%;
+        margin-top: 2%;
+        background-color: rgba(255,255,255,0.9);
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <h1>Registration</h1>
+    <form method="post" action=".">
+        {{ form|bootstrap }}
+        {% csrf_token %}
+      <input class='btn btn-block btn-primary' type="submit" value="Join" />
+    </form>
+</div>
+{% endblock content %}

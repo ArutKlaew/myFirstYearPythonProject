@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap %}
+{#Title#}
+{% block title %}
+    <title>Reservation</title>
+{% endblock %}
+
+{#Style#}
+{% block style %}
+    <style media="screen">
+        .wrapper {
+            padding: 3%;
+            margin-top: 5%;
+            background-color: rgba(255,255,255,0.9);
+            animation: fadein 1s;
+        }
+        @keyframes fadein {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        body {
+            background-image: url({% static 'img/home_cover.jpg' %});
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .wrapper div:nth-child(3) {
+            margin-top: 6%;
+        }
+
+    </style>
+{% endblock %}
+
+
+{#Content#}
+{% block content %}
+    <div class="container">
+        <div class="wrapper">
+            <div class="row">
+                <h1>Reservation List</h1>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Reservation Id</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Seat</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.id }}</td>
+                            <td>{{ reservation.reserved_time.time }}</td>
+                            <td>{{ reservation.reserved_time.date }}</td>
+                            <td>{{ reservation.seat }}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning col" data-toggle="modal" data-target="#editModal">
+                                    Edit
+                                </button>
+                                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel">Edit</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="POST" action="{% url 'reservation:update' reservation.id %}">
+                                                {% csrf_token %}
+                                                <div class="modal-body">
+                                                    {{ reservation_edit_form | bootstrap }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger col" data-toggle="modal" data-target="#deleteModal">
+                                    Delete
+                                </button>
+                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel">Delete</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="POST" action="{% url 'reservation:delete' reservation.id %}">
+                                                {% csrf_token %}
+                                                <div class="modal-body">
+                                                    <h5>Are you sure you wanted to delete this reservation ?</h5>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <td colspan="6" class="text-center bg-warning">No Reservation</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <a class="btn btn-primary" href="{% url 'reservation:create' %}">Make a Reservation</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{#Javascript#}
+{% block javascript %}
+
+{% endblock %}
